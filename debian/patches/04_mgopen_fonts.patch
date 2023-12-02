@@ -1,3 +1,5 @@
+Description: Add missing MgOpen fonts to 40- and 65-nonlatin.conf
+
 Index: fontconfig-2.11.0/conf.d/40-nonlatin.conf
 ===================================================================
 --- fontconfig-2.11.0.orig/conf.d/40-nonlatin.conf	2013-10-11 05:10:16.000000000 +0200

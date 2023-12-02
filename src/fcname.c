@@ -143,6 +143,7 @@ static const FcConstant _FcBaseConstants[] = {
     { (FcChar8 *) "light",	    "weight",   FC_WEIGHT_LIGHT, },
     { (FcChar8 *) "book",	    "weight",	FC_WEIGHT_BOOK, },
     { (FcChar8 *) "regular",	    "weight",   FC_WEIGHT_REGULAR, },
+    { (FcChar8 *) "normal",	    "weight",	FC_WEIGHT_NORMAL, },
     { (FcChar8 *) "medium",	    "weight",   FC_WEIGHT_MEDIUM, },
     { (FcChar8 *) "demibold",	    "weight",   FC_WEIGHT_DEMIBOLD, },
     { (FcChar8 *) "semibold",	    "weight",   FC_WEIGHT_DEMIBOLD, },
@@ -151,6 +152,8 @@ static const FcConstant _FcBaseConstants[] = {
     { (FcChar8 *) "ultrabold",	    "weight",   FC_WEIGHT_EXTRABOLD, },
     { (FcChar8 *) "black",	    "weight",   FC_WEIGHT_BLACK, },
     { (FcChar8 *) "heavy",	    "weight",	FC_WEIGHT_HEAVY, },
+    { (FcChar8 *) "extrablack",     "weight",	FC_WEIGHT_EXTRABLACK, },
+    { (FcChar8 *) "ultrablack",     "weight",	FC_WEIGHT_ULTRABLACK, },
 
     { (FcChar8 *) "roman",	    "slant",    FC_SLANT_ROMAN, },
     { (FcChar8 *) "italic",	    "slant",    FC_SLANT_ITALIC, },
@@ -228,6 +231,19 @@ FcNameGetConstant (const FcChar8 *string)
     return 0;
 }
 
+const FcConstant *
+FcNameGetConstantFor (const FcChar8 *string, const char *object)
+{
+    unsigned int	    i;
+
+    for (i = 0; i < NUM_FC_CONSTANTS; i++)
+	if (!FcStrCmpIgnoreCase (string, _FcBaseConstants[i].name) &&
+	    !FcStrCmpIgnoreCase ((const FcChar8 *)object, (const FcChar8 *)_FcBaseConstants[i].object))
+	    return &_FcBaseConstants[i];
+
+    return 0;
+}
+
 FcBool
 FcNameConstant (const FcChar8 *string, int *result)
 {
@@ -235,6 +251,30 @@ FcNameConstant (const FcChar8 *string, int *result)
 
     if ((c = FcNameGetConstant(string)))
     {
+	*result = c->value;
+	return FcTrue;
+    }
+    return FcFalse;
+}
+
+FcBool
+FcNameConstantWithObjectCheck (const FcChar8 *string, const char *object, int *result)
+{
+    const FcConstant	*c;
+
+    if ((c = FcNameGetConstantFor(string, object)))
+    {
+	*result = c->value;
+	return FcTrue;
+    }
+    else if ((c = FcNameGetConstant(string)))
+    {
+	if (strcmp (c->object, object) != 0)
+	{
+	    fprintf (stderr, "Fontconfig error: Unexpected constant name `%s' used for object `%s': should be `%s'\n", string, object, c->object);
+	    return FcFalse;
+	}
+	/* Unlikely to reach out */
 	*result = c->value;
 	return FcTrue;
     }
@@ -287,7 +327,7 @@ FcNameBool (const FcChar8 *v, FcBool *result)
 }
 
 static FcValue
-FcNameConvert (FcType type, FcChar8 *string)
+FcNameConvert (FcType type, const char *object, FcChar8 *string)
 {
     FcValue	v;
     FcMatrix	m;
@@ -297,7 +337,7 @@ FcNameConvert (FcType type, FcChar8 *string)
     v.type = type;
     switch ((int) v.type) {
     case FcTypeInteger:
-	if (!FcNameConstant (string, &v.u.i))
+	if (!FcNameConstantWithObjectCheck (string, object, &v.u.i))
 	    v.u.i = atoi ((char *) string);
 	break;
     case FcTypeString:
@@ -338,8 +378,8 @@ FcNameConvert (FcType type, FcChar8 *string)
 	    ec = malloc (len + 1);
 	    if (sc && ec && sscanf ((char *) string, "[%s %[^]]]", sc, ec) == 2)
 	    {
-		if (FcNameConstant ((const FcChar8 *) sc, &si) &&
-		    FcNameConstant ((const FcChar8 *) ec, &ei))
+		if (FcNameConstantWithObjectCheck ((const FcChar8 *) sc, object, &si) &&
+		    FcNameConstantWithObjectCheck ((const FcChar8 *) ec, object, &ei))
 		    v.u.r =  FcRangeCreateDouble (si, ei);
 		else
 		    goto bail1;
@@ -348,7 +388,7 @@ FcNameConvert (FcType type, FcChar8 *string)
 	    {
 	    bail1:
 		v.type = FcTypeDouble;
-		if (FcNameConstant (string, &si))
+		if (FcNameConstantWithObjectCheck (string, object, &si))
 		{
 		    v.u.d = (double) si;
 		} else {
@@ -427,7 +467,7 @@ FcNameParse (const FcChar8 *name)
 	name = FcNameFindNext (name, "-,:", save, &delim);
 	if (save[0])
 	{
-	    if (!FcPatternAddString (pat, FC_FAMILY, save))
+	    if (!FcPatternObjectAddString (pat, FC_FAMILY_OBJECT, save))
 		goto bail2;
 	}
 	if (delim != ',')
@@ -441,7 +481,7 @@ FcNameParse (const FcChar8 *name)
 	    d = strtod ((char *) save, (char **) &e);
 	    if (e != save)
 	    {
-		if (!FcPatternAddDouble (pat, FC_SIZE, d))
+		if (!FcPatternObjectAddDouble (pat, FC_SIZE_OBJECT, d))
 		    goto bail2;
 	    }
 	    if (delim != ',')
@@ -461,7 +501,7 @@ FcNameParse (const FcChar8 *name)
 		    name = FcNameFindNext (name, ":,", save, &delim);
 		    if (t)
 		    {
-			v = FcNameConvert (t->type, save);
+			v = FcNameConvert (t->type, t->object, save);
 			if (!FcPatternAdd (pat, t->object, v, FcTrue))
 			{
 			    FcValueDestroy (v);
@@ -637,7 +677,7 @@ FcNameUnparseEscaped (FcPattern *pat, FcBool escape)
 	if (!strcmp (o->object, FC_FAMILY) ||
 	    !strcmp (o->object, FC_SIZE))
 	    continue;
-    
+
 	e = FcPatternObjectFindElt (pat, id);
 	if (e)
 	{

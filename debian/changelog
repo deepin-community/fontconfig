@@ -1,3 +1,64 @@
+fontconfig (2.15.0-2.3) unstable; urgency=medium
+
+  * Non-maintainer upload.
+
+  [ Carles Pina i Estany ]
+  * Update po-debconf Catalan translation
+
+  [ Boyuan Yang ]
+  * debian/fontconfig-config.postrm: Also clean up the newly-added
+    70-no-bitmaps-except-emoji.conf file on purge to fix piuparts errors.
+    (Closes: #1072210) (MR: !14)
+
+ -- Boyuan Yang <byang@debian.org>  Fri, 04 Apr 2025 09:33:10 -0400
+
+fontconfig (2.15.0-2.2) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * Use 'mkdir -p' in fontconfig-config.postinst to avoid package installation
+    failure on minimal systems without a full directory tree. (Closes: #1100871)
+
+ -- Luca Boccassi <bluca@debian.org>  Wed, 19 Mar 2025 19:50:15 +0000
+
+fontconfig (2.15.0-2.1) unstable; urgency=medium
+
+  * Non-maintainer upload
+  * /usr/local/share/fonts is owned by group:staff if
+    /etc/staff-group-for-usr-local is present
+    Closes: #962420
+
+ -- Anibal Monsalve Salazar <anibal@debian.org>  Sun, 09 Mar 2025 20:04:42 +1100
+
+fontconfig (2.15.0-2) unstable; urgency=medium
+
+  * Team upload
+  * Cherry-pick patches to fix out of memory errors
+    when current working directory is deleted (Closes: #1051683)
+  * Remove obsolete unused manpages
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 08 Jan 2025 15:50:14 -0900
+
+fontconfig (2.15.0-1.1) unstable; urgency=high
+
+  * Add fix-emoji-no-bitmap-font.patch and update
+    debian/fontconfig-config.config to allow emoji font when no bitmap fonts
+    are allowed (which has been Debian's default for many years)
+    (Closes: #1064267) (LP: #2054924)
+
+ -- Guido Berhoerster <guido+freiesoftware@berhoerster.name>  Fri, 08 Mar 2024 13:20:01 +0100
+
+fontconfig (2.15.0-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream release
+  * Add debian/upstream/metadata
+  * Drop unused gbp.conf options
+  * Drop obsolete dbgsym migration handling
+  * Enable all hardening flags
+  * Refresh patches
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Sat, 17 Feb 2024 14:18:24 -0500
+
 fontconfig (2.14.2-6) unstable; urgency=medium
 
   * Team upload

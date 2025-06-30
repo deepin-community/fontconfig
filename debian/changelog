@@ -1,3 +1,9 @@
+fontconfig (2.15.0-2.3deepin1) unstable; urgency=medium
+
+  * Add deepin patch: Skip empty entries in XDG_DATA_DIRS parsing.
+
+ -- xiangzelong <xiangzelong@deepin.org>  Mon, 30 Jun 2025 10:59:11 +0800
+
 fontconfig (2.15.0-2.3) unstable; urgency=medium
 
   * Non-maintainer upload.

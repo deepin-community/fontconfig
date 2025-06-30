@@ -1,5 +1,9 @@
 From: Gunnar Hjalmarsson <gunnarhj@debian.org>
+Date: Sun, 20 Aug 2023 00:57:30 +0200
 Subject: Change the default monospcace font for latin scipts
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
 Upstream‘s default monospace font for latin scripts is currently
 Noto Sans Mono, and that has been reflected in Debian since
@@ -12,7 +16,12 @@ the list.
 Bug-Debian: https://bugs.debian.org/1028897
 Forwarded: not-needed
 Last-Update: 2023-08-20
+---
+ conf.d/60-latin.conf | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/conf.d/60-latin.conf b/conf.d/60-latin.conf
+index ff933af..fcf2dbd 100644
 --- a/conf.d/60-latin.conf
 +++ b/conf.d/60-latin.conf
 @@ -35,8 +35,9 @@

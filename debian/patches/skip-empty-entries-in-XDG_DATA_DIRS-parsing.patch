@@ -1,0 +1,32 @@
+From 4a579aca645fd70da6739c493fd13643aad33250 Mon Sep 17 00:00:00 2001
+From: ComixHe <heyuming@deepin.org>
+Date: Mon, 23 Jun 2025 17:06:50 +0800
+Subject: [PATCH] fix: Skip empty entries in XDG_DATA_DIRS parsing
+
+The XDG_DATA_DIRS environment variable parsing was not handling
+leading colons correctly (e.g., ":/usr/share:/usr/local/share").
+This resulted in empty string entries being added to the StrSet.
+
+Signed-off-by: ComixHe <heyuming@deepin.org>
+
+Changelog: fixed
+---
+ src/fccfg.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/fccfg.c b/src/fccfg.c
+index 969eadfc..4bd1e4df 100644
+--- a/src/fccfg.c
++++ b/src/fccfg.c
+@@ -2618,6 +2618,10 @@ FcConfigXdgDataDirs (void)
+ 		e = p + 1;
+ 	    }
+ 	    len = strlen ((const char *) s);
++		if (len == 0) {
++		FcStrFree (s);
++		continue;
++	    }
+ 	    if (s[len - 1] == FC_DIR_SEPARATOR)
+ 	    {
+ 		do
+-- 

@@ -1,0 +1,31 @@
+From c1aed41d653de8c12eafdae2161e409a644405a7 Mon Sep 17 00:00:00 2001
+From: Simon McVittie <smcv@debian.org>
+Date: Wed, 4 Feb 2026 10:04:57 +0000
+Subject: [PATCH] test: Use Python instead of uuidgen(1)
+
+The build requires Python anyway, so we lose nothing by relying on
+Python for UUID generation. This avoids needing a build-dependency on
+uuid-runtime.
+
+Bug-Debian: https://bugs.debian.org/1054888
+Forwarded: not-needed, this test has been rewritten in Python upstream
+---
+ test/run-test.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/test/run-test.sh b/test/run-test.sh
+index 9b3c91c8..caeb6a47 100644
+--- a/test/run-test.sh
++++ b/test/run-test.sh
+@@ -394,7 +394,7 @@ $FCCACHE "$FONTDIR"
+ sleep 1
+ _cache=$(ls -1 --color=no "$CACHEDIR"/*cache*)
+ _mtime=$(fstat "%Y" "$FONTDIR")
+-_uuid=$(uuidgen)
++_uuid=$(python3 -m uuid)
+ _newcache=$(echo "$_cache" | sed "s/\([0-9a-f]*\)\(\-.*\)/$_uuid\2/")
+ mv "$_cache" "$_newcache"
+ echo "$_uuid" > "$FONTDIR"/.uuid
+-- 
+2.51.0
+

@@ -1,0 +1,45 @@
+From 071d252b07213f73658b861fc34a82114102d603 Mon Sep 17 00:00:00 2001
+From: Simon McVittie <smcv@debian.org>
+Date: Wed, 4 Feb 2026 09:42:38 +0000
+Subject: [PATCH] test: Don't run tests that use bubblewrap if it isn't
+ available
+
+When building in a container or chroot, bubblewrap normally won't work
+due to kernel restrictions.
+
+Bug: https://gitlab.freedesktop.org/fontconfig/fontconfig/-/issues/320
+Bug-Debian: https://bugs.debian.org/1054888
+Forwarded: not-needed, this test has been rewritten in Python upstream
+---
+ test/run-test.sh | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/test/run-test.sh b/test/run-test.sh
+index 9b3c91c8..f354aee1 100644
+--- a/test/run-test.sh
++++ b/test/run-test.sh
+@@ -46,6 +46,12 @@ FCCACHE="$LOG_COMPILER $BUILDTESTDIR/../fc-cache/fc-cache$EXEEXT"
+ 
+ if [ -x "$(command -v bwrap)" ]; then
+     BWRAP="$(command -v bwrap)"
++
++    # When running in a chroot or container, bubblewrap might be present
++    # but not successfully runnable due to kernel restrictions
++    if ! "$BWRAP" --dev-bind / / true; then
++        BWRAP=
++    fi
+ fi
+ 
+ if [ -x "$(command -v md5sum)" ]; then
+@@ -419,7 +425,7 @@ fi
+ rm -rf "$TESTTMPDIR" "$BUILDTESTDIR"/out1 "$BUILDTESTDIR"/out2 "$BUILDTESTDIR"/bind-fonts.conf
+ 
+ else
+-    echo "No bubblewrap installed. skipping..."
++    echo "No bubblewrap installed or it doesn't work. skipping..."
+ fi # if [ x"$BWRAP" != "x" -a "x$EXEEXT" = "x" ]
+ 
+ if [ "x$EXEEXT" = "x" ]; then
+-- 
+2.51.0
+

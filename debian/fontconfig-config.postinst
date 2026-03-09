@@ -157,17 +157,6 @@ if is_initial_configuration "$@"; then
     esac
 fi # end changes applied only for initial config / reconfiguration
 
-# Create /usr/local/share/fonts
-LOCALDIR=/usr/local/share/fonts
-if [ ! -d $LOCALDIR ]; then
-  mkdir -p $LOCALDIR 2>/dev/null
-fi
-
-if [ -f /etc/staff-group-for-usr-local ]; then
-  chmod 2775 $LOCALDIR
-  chown root:staff $LOCALDIR
-fi
-
 # fontconfig-config 2.11.0-5 (and earlier) created /etc/fonts.conf.d by mistake
 # remove it
 

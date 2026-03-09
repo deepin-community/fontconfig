@@ -37,6 +37,8 @@ libfontconfig.so.1 libfontconfig1 #MINVER#
  FcCharSetSubtract@Base 2.12.6
  FcCharSetSubtractCount@Base 2.12.6
  FcCharSetUnion@Base 2.12.6
+ FcConfigAcceptFilter@Base 2.17.1
+ FcConfigAcceptFont@Base 2.17.1
  FcConfigAddRule@Base 2.12.6
  FcConfigAppFontAddDir@Base 2.12.6
  FcConfigAppFontAddFile@Base 2.12.6
@@ -55,6 +57,7 @@ libfontconfig.so.1 libfontconfig1 #MINVER#
  FcConfigGetConfigDirs@Base 2.12.6
  FcConfigGetConfigFiles@Base 2.12.6
  FcConfigGetCurrent@Base 2.12.6
+ FcConfigGetDefaultLangs@Base 2.17.1
  FcConfigGetFilename@Base 2.14.1
  FcConfigGetFontDirs@Base 2.12.6
  FcConfigGetFonts@Base 2.12.6
@@ -64,8 +67,11 @@ libfontconfig.so.1 libfontconfig1 #MINVER#
  FcConfigHome@Base 2.12.6
  FcConfigParseAndLoad@Base 2.12.6
  FcConfigParseAndLoadFromMemory@Base 2.12.6
+ FcConfigPreferAppFont@Base 2.17.1
  FcConfigReference@Base 2.12.6
  FcConfigSetCurrent@Base 2.12.6
+ FcConfigSetDefaultSubstitute@Base 2.17.1
+ FcConfigSetFontSetFilter@Base 2.17.1
  FcConfigSetRescanInterval@Base 2.12.6
  FcConfigSetRescanInverval@Base 2.12.6
  FcConfigSetSysRoot@Base 2.12.6

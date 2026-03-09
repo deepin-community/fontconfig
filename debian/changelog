@@ -1,8 +1,83 @@
-fontconfig (2.15.0-2.3deepin1) unstable; urgency=medium
+fontconfig (2.17.1-5) unstable; urgency=medium
 
-  * Add deepin patch: Skip empty entries in XDG_DATA_DIRS parsing.
+  * Team upload
+  * d/rules, d/fontconfig-config.post*: Use dh_usrlocal.
+    It's better if bugs like #962420, #1072210, #1100871, #1114975 can
+    be resolved centrally by improving debhelper, rather than in each
+    package that manages a /usr/local subdirectory.
+  * d/p/bwrap-might-not-work.patch: Allow for bubblewrap failing in
+    containers.
+    This avoids a FTBFS in some non-minimal build environments.
+    In a minimal build environment, normally the parts of the test that
+    would use bwrap are skipped, but in a non-minimal environment it
+    might be installed. (Helps: #1054888)
+  * d/p/no-uuidgen.patch: Avoid needing a build-dependency on uuid-runtime.
+    The upstream test suite requires uuidgen(1) from uuid-runtime if
+    bwrap(1) is installed, but there's no real reason to need uuidgen:
+    fontconfig already Build-Depends on python3, which can already
+    generate UUIDs, and offers this as a command-line interface since
+    3.12. (Closes: #1054888)
 
- -- xiangzelong <xiangzelong@deepin.org>  Mon, 30 Jun 2025 10:59:11 +0800
+ -- Simon McVittie <smcv@debian.org>  Mon, 09 Feb 2026 10:04:18 +0000
+
+fontconfig (2.17.1-4) unstable; urgency=medium
+
+  * Team upload
+  * Merge NMUs from trixie and early forky development
+    - Only make /usr/local/share/fonts 2755 root:staff if
+      /etc/staff-group-for-usr-local is present.
+      Thanks to Anibal Monsalve Salazar (Closes: #962420)
+    - Use `mkdir -p` to create /usr/local/share if necessary.
+      Thanks to Luca Boccassi (Closes: #1100871)
+    - Clean up 70-no-bitmaps-except-emoji.conf on purge.
+      Thanks to Kirill Rekhov and Boyuan Yang (Closes: #1072210)
+  * Revert a metadata change made to tr.po in one of the NMUs, which
+    doesn't look as though it was intended
+
+ -- Simon McVittie <smcv@debian.org>  Tue, 03 Feb 2026 17:11:41 +0000
+
+fontconfig (2.17.1-3) unstable; urgency=medium
+
+  * Team upload
+  * Release to unstable
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 12 Jan 2026 15:14:47 -0500
+
+fontconfig (2.17.1-2) experimental; urgency=medium
+
+  * Team upload
+  * Make docbook and docbook-utils required Build-Depends (Closes: #1115959)
+  * Bump Standards Version to 4.7.3
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Sun, 11 Jan 2026 16:03:28 -0500
+
+fontconfig (2.17.1-1) experimental; urgency=medium
+
+  * Team upload
+
+  [ Jeremy Bícha ]
+  * New upstream release
+  * Update install files because developer documentation is now
+    a single HTML file
+  * debian/fontconfig-config.postinst: Don't fail if /usr/local/ is read-only
+    (Closes: #1114975)
+  * debian/libfontconfig1.symbols: Add new symbols
+  * Remove 3 patches applied in new release
+  * debian/watch: Convert to Version: 5 and watch for GitLab tags
+  * Remove obsolete Rules-Requires-Root: no field
+  * Bump Standards Version to 4.7.2
+
+  [ Carles Pina i Estany ]
+  * Update po-debconf Catalan translation
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 18 Sep 2025 18:49:33 -0400
+
+fontconfig (2.15.0-2.4) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Sourceful no-change upload for IEEE long double on ppc64el.
+
+ -- Matthias Klose <doko@debian.org>  Thu, 04 Sep 2025 11:23:02 +0200
 
 fontconfig (2.15.0-2.3) unstable; urgency=medium
 

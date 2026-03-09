@@ -37,7 +37,7 @@ index 3e5d1c7..71049f1 100644
  			<family>Hapax Berbère</family> <!-- tifinagh -->
  			<family>MS Gothic</family> <!-- han (ja) -->
 @@ -127,7 +123,6 @@
-  			<family>AR PL Mingti2L Big5</family>
+ 			<family>AR PL Mingti2L Big5</family>
  			<family>ＭＳ ゴシック</family>
  			<family>ZYSong18030</family> <!-- han (zh-cn,zh-tw) -->
 -			<family>TSCu_Paranar</family> <!-- tamil -->

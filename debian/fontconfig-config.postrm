@@ -33,9 +33,6 @@ case "$1" in
 		rm -f $CONFDIR/$c
 	    done
 
-	    # Remove an empty local fonts directory
-	    rmdir /usr/local/share/fonts 2>/dev/null || true
-
 	    # Purge debconf database
 	    if [ -e /usr/share/debconf/confmodule ]; then
 		. /usr/share/debconf/confmodule

@@ -30,6 +30,8 @@ execute_after_dh_install-arch:
 	# Do not ship 10-hinting-slight.conf symlink by default, let debconf handle
 	# that so the administrator can configure it. Still default to slight hinting.
 	rm debian/fontconfig-config/etc/fonts/conf.d/10-hinting-slight.conf
+	# For dh_usrlocal
+	install -d debian/fontconfig-config/usr/local/share/fonts
 
 # one of the tests makes sure that the uuid changes, so we have to run tests
 # without SOURCE_DATE_EPOCH set

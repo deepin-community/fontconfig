@@ -1,0 +1,42 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: dongshengyuan <545258830@qq.com>
+Date: Mon, 10 Aug 2026 16:16:01 +0800
+Subject: [PATCH] src: Suppress FcInit warning on fallback object init
+
+The object subsystem already recovers by calling FcObjectInit() when it is
+used before FcInit().
+
+Avoid writing the warning directly to stderr, which can break callers that
+parse command output strictly.
+
+Forwarded: not-needed
+---
+ src/fcobjs.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/src/fcobjs.c b/src/fcobjs.c
+index c7bcb0c..9864a31 100644
+--- a/src/fcobjs.c
++++ b/src/fcobjs.c
+@@ -82,17 +82,11 @@ static FcObjectType *
+ _FcObjectLookupOtherTypeByName (const char *str, FcObject *id)
+ {
+     struct FcObjectOtherTypeInfo *ots, *ot;
+-    static FcBool                 warn = FcFalse;
+ 
+ retry:
+     ots = fc_atomic_ptr_get (&other_types);
+-    if (obj_ref.count < 1) {
+-	if (!warn) {
+-	    fprintf (stderr, "Fontconfig warning: using without calling FcInit()\n");
+-	    warn = FcTrue;
+-	}
++    if (obj_ref.count < 1)
+ 	FcObjectInit();
+-    }
+ 
+     for (ot = ots; ot; ot = ot->next)
+ 	if (0 == strcmp (ot->object.object, str))
+-- 
+2.51.0
+

@@ -6,3 +6,4 @@ make-byteReverse-hidden.patch
 change-default-mono-font-for-latin.patch
 bwrap-might-not-work.patch
 no-uuidgen.patch
+suppress-fcinit-warning.patch

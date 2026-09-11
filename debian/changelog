@@ -1,3 +1,9 @@
+fontconfig (2.17.1-5deepin2) unstable; urgency=medium
+
+  * Rebuild with LTO enabled (dpkg vendor feature optimize/lto).
+
+ -- tunaichao <tunaichao@uniontech.com>  Fri, 11 Sep 2026 14:37:13 +0800
+
 fontconfig (2.17.1-5deepin1) unstable; urgency=medium
 
   * d/p/suppress-fcinit-warning.patch: Suppress the FcInit warning during
